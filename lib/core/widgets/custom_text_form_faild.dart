@@ -11,6 +11,8 @@ class custom_text_form_faild extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.onPressed,
+    required this.validator,
+    required this.controller,
   });
   final String title;
   final IconData? icon;
@@ -18,9 +20,13 @@ class custom_text_form_faild extends StatelessWidget {
   TextInputType keyboardType;
   bool obscureText;
   void Function()? onPressed;
+  String? Function(String?) validator;
+  TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
+      validator: validator,
       obscureText: obscureText,
       keyboardType: keyboardType,
       decoration: InputDecoration(

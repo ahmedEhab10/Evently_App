@@ -3,8 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 
 class Custom_ElevatedButton extends StatelessWidget {
-  const Custom_ElevatedButton({super.key, required this.title});
+  Custom_ElevatedButton({
+    super.key,
+    required this.title,
+    required this.onPressed,
+  });
   final String title;
+  void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +17,7 @@ class Custom_ElevatedButton extends StatelessWidget {
       children: [
         Expanded(
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: onPressed,
 
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
