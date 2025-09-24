@@ -146,7 +146,11 @@ class _RegisterBodyState extends State<RegisterBody> {
               Custom_ElevatedButton(
                 title: 'Create Account',
                 onPressed: () {
-                  if (formkey.currentState?.validate() == false) return;
+                  // if (formkey.currentState?.validate() == false) {
+                  //   return;
+                  // }
+                  ;
+                  Navigator.pushNamed(context, AppRoutes.Main_layout);
                 },
               ),
               SizedBox(height: 12.h),

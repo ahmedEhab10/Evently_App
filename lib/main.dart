@@ -18,12 +18,15 @@ class EventlyApp extends StatelessWidget {
       designSize: const Size(393, 841),
       minTextAdapt: true,
       splitScreenMode: true,
-      child: MaterialApp(
-        onGenerateRoute: RoutesManger.router,
-        initialRoute: AppRoutes.register,
-        theme: ThemeManager.lightTheme,
-        darkTheme: ThemeManager.darkTheme,
-      ),
+      builder: (context, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: RoutesManger.router,
+          initialRoute: AppRoutes.register,
+          theme: ThemeManager.lightTheme, // هنا بيتبني بعد init
+          darkTheme: ThemeManager.darkTheme,
+        );
+      },
     );
   }
 }
