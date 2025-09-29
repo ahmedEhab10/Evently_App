@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:myeventlyapp/Models/Event_item_model.dart';
+import 'package:myeventlyapp/core/Helper/get_mounth_name.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 
 class Event_item extends StatefulWidget {
@@ -41,16 +43,16 @@ class _Event_itemState extends State<Event_item> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '21',
-                      style: TextStyle(
+                      widget.eventModel.date.day.toString(),
+                      style: GoogleFonts.inter(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
                         color: ColorsManager.blue,
                       ),
                     ),
                     Text(
-                      'Nov',
-                      style: TextStyle(
+                      GetMounthName.getMounthName(widget.eventModel.date),
+                      style: GoogleFonts.inter(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                         color: ColorsManager.blue,
@@ -72,9 +74,10 @@ class _Event_itemState extends State<Event_item> {
                     Expanded(
                       child: Text(
                         widget.eventModel.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                        style: GoogleFonts.inter(
                           fontSize: 14.sp,
+                          color: ColorsManager.black1C,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
