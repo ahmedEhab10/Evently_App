@@ -1,9 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:myeventlyapp/Models/Event_item_model.dart';
 import 'package:myeventlyapp/Models/category_model.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 import 'package:myeventlyapp/core/widgets/Custom_tab_item.dart';
+import 'package:myeventlyapp/core/widgets/Event_item.dart';
 import 'package:myeventlyapp/featuers/main_layout/widgets/home_tap/widgets/information_widget.dart';
 
 class HomeScreenBody extends StatelessWidget {
@@ -11,7 +12,24 @@ class HomeScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [information_containat()]);
+    return Column(
+      children: [
+        information_containat(),
+        Expanded(
+          child: ListView.builder(
+            itemBuilder: (context, index) => Event_item(
+              eventModel: EventModel(
+                category: CategoryModel.categories[2],
+                title: 'Meeting for Updating The Development Method ',
+                description: 'Meeting for Updating The Development Method ',
+                date: DateTime.now(),
+              ),
+            ),
+            itemCount: 15,
+          ),
+        ),
+      ],
+    );
   }
 }
 
