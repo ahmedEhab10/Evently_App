@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
+import 'package:myeventlyapp/core/routes_manager/routes.dart';
 import 'package:myeventlyapp/featuers/main_layout/widgets/fav_tap/fav_screen.dart';
 import 'package:myeventlyapp/featuers/main_layout/widgets/home_tap/home_screen.dart';
 import 'package:myeventlyapp/featuers/main_layout/widgets/map_tap/map_screen.dart';
@@ -24,6 +25,15 @@ class _Main_AyoutState extends State<Main_Ayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, AppRoutes.Crate_Event);
+        },
+        child: Icon(Icons.add, color: ColorsManager.white),
+        backgroundColor: ColorsManager.blue,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ),
       body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
