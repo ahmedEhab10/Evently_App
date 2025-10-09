@@ -159,10 +159,7 @@ class _RegisterBodyState extends State<RegisterBody> {
                 children: [
                   Text(
                     'Already have an account ? ',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                   GestureDetector(
                     onTap: () {

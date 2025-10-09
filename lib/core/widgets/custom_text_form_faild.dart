@@ -6,13 +6,14 @@ class custom_text_form_faild extends StatelessWidget {
   custom_text_form_faild({
     super.key,
     required this.title,
-    required this.icon,
+    this.icon,
     this.suffixicon,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.onPressed,
     required this.validator,
     required this.controller,
+    this.maxLines = 1,
   });
   final String title;
   final IconData? icon;
@@ -22,9 +23,11 @@ class custom_text_form_faild extends StatelessWidget {
   void Function()? onPressed;
   String? Function(String?) validator;
   TextEditingController? controller;
+  int maxLines;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: maxLines,
       controller: controller,
       validator: validator,
       obscureText: obscureText,

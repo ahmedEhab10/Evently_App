@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:myeventlyapp/Providers/Theme_provider.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
+import 'package:provider/provider.dart';
 
 class information_widget extends StatelessWidget {
   const information_widget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var themeprovaider = Provider.of<ThemeProvider>(context);
     return Column(
       children: [
         SizedBox(height: 16.h),
@@ -38,7 +41,22 @@ class information_widget extends StatelessWidget {
 
             Row(
               children: [
-                Icon(Icons.sunny, color: ColorsManager.white, size: 24.sp),
+                GestureDetector(
+                  onTap: () {
+                    themeprovaider.changtheme(
+                      themeprovaider.cuurrentTheme == ThemeMode.light
+                          ? ThemeMode.dark
+                          : ThemeMode.light,
+                    );
+                  },
+                  child: Icon(
+                    themeprovaider.cuurrentTheme == ThemeMode.light
+                        ? Icons.dark_mode
+                        : Icons.sunny,
+                    color: ColorsManager.white,
+                    size: 24.sp,
+                  ),
+                ),
                 SizedBox(width: 8.w),
                 Container(
                   color: Colors.white,

@@ -22,6 +22,7 @@ class _Event_itemState extends State<Event_item> {
       width: double.infinity,
       height: 203.h,
       decoration: BoxDecoration(
+        border: Border.all(color: ColorsManager.blue, width: 1.w),
         borderRadius: BorderRadius.circular(16.r),
         image: DecorationImage(
           image: AssetImage(widget.eventModel.category.imagePath),
@@ -74,11 +75,7 @@ class _Event_itemState extends State<Event_item> {
                     Expanded(
                       child: Text(
                         widget.eventModel.title,
-                        style: GoogleFonts.inter(
-                          fontSize: 14.sp,
-                          color: ColorsManager.black1C,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ),
                     GestureDetector(

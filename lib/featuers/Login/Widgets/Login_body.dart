@@ -115,10 +115,7 @@ class _LoginBodyState extends State<LoginBody> {
                 children: [
                   Text(
                     'Don’t Have Account ? ',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                   GestureDetector(
                     onTap: () {
