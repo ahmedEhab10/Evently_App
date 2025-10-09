@@ -26,7 +26,7 @@ class Custom_ElevatedButton extends StatelessWidget {
               backgroundColor: ColorsManager.blue,
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
                 title,
                 style: TextStyle(

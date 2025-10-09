@@ -29,10 +29,10 @@ class EventlyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           onGenerateRoute: RoutesManger.router,
-          initialRoute: AppRoutes.register,
+          initialRoute: AppRoutes.start,
           theme: ThemeManager.light, // هنا بيتبني بعد init
           darkTheme: ThemeManager.dark,
-          themeMode: Provider.of<ThemeProvider>(context).cuurrentTheme,
+          themeMode: ThemeMode.light,
         );
       },
     );
