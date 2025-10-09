@@ -20,7 +20,7 @@ class PersonScreenBody extends StatelessWidget {
           width: double.infinity,
 
           decoration: BoxDecoration(
-            color: ColorsManager.red,
+            color: ColorsManager.blue,
             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(36.r)),
           ),
           child: SafeArea(
