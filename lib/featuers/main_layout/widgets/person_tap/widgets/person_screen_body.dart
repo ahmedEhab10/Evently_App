@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myeventlyapp/Providers/Theme_provider.dart';
+import 'package:myeventlyapp/core/Prefs/Prefs_Manager.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 import 'package:myeventlyapp/featuers/main_layout/widgets/person_tap/widgets/CustomDropDownItem.dart';
 import 'package:provider/provider.dart';
@@ -65,6 +66,7 @@ class PersonScreenBody extends StatelessWidget {
             themeprovider.changtheme(
               newTheme == 'Light' ? ThemeMode.light : ThemeMode.dark,
             );
+            PrefsManager.savecurrenttheme(newTheme!);
           },
           label: 'Theme',
           selectedLabel: themeprovider.cuurrentTheme == ThemeMode.light

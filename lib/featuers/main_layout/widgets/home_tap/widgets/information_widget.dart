@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myeventlyapp/Providers/Theme_provider.dart';
+import 'package:myeventlyapp/core/Prefs/Prefs_Manager.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +48,11 @@ class information_widget extends StatelessWidget {
                       themeprovaider.cuurrentTheme == ThemeMode.light
                           ? ThemeMode.dark
                           : ThemeMode.light,
+                    );
+                    PrefsManager.savecurrenttheme(
+                      themeprovaider.cuurrentTheme == ThemeMode.light
+                          ? "lIght"
+                          : "Dark",
                     );
                   },
                   child: Icon(
