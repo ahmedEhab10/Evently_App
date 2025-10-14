@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myeventlyapp/Providers/Theme_provider.dart';
 import 'package:myeventlyapp/config/Theme/Theme_Manager.dart';
+import 'package:myeventlyapp/core/Prefs/Prefs_Manager.dart';
 import 'package:myeventlyapp/core/routes_manager/app_router.dart';
 import 'package:myeventlyapp/core/routes_manager/routes.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await PrefsManager.init();
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeProvider(),
@@ -29,7 +32,7 @@ class EventlyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           onGenerateRoute: RoutesManger.router,
-          initialRoute: AppRoutes.register,
+          initialRoute: AppRoutes.start,
           theme: ThemeManager.light, // هنا بيتبني بعد init
           darkTheme: ThemeManager.dark,
           themeMode: Provider.of<ThemeProvider>(context).cuurrentTheme,
