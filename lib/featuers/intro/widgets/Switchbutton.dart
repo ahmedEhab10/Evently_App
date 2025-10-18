@@ -10,7 +10,7 @@ class SwitchExample extends StatefulWidget {
 }
 
 class _SwitchExampleState extends State<SwitchExample> {
-  bool light = true;
+  bool Dark = true;
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +30,16 @@ class _SwitchExampleState extends State<SwitchExample> {
 
     return Switch(
       // This bool value toggles the switch.
-      value: light,
+      value: Dark,
       overlayColor: overlayColor,
       trackColor: trackColor,
       thumbColor: const WidgetStatePropertyAll<Color>(Colors.white70),
-      onChanged: (bool value) {},
+      onChanged: (bool value) {
+        setState(() {
+          Dark = value;
+        });
+        themeprovider.changtheme(Dark ? ThemeMode.dark : ThemeMode.light);
+      },
     );
   }
 }
