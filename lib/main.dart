@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:myeventlyapp/Providers/Loading_provaider.dart';
 import 'package:myeventlyapp/Providers/Theme_provider.dart';
 import 'package:myeventlyapp/config/Theme/Theme_Manager.dart';
 import 'package:myeventlyapp/core/Prefs/Prefs_Manager.dart';
@@ -13,8 +14,8 @@ void main() async {
   await Firebase.initializeApp();
   await PrefsManager.init();
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => ThemeProvider())],
       child: const EventlyApp(),
     ),
   );

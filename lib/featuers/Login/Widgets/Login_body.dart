@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
+import 'package:myeventlyapp/core/routes_manager/routes.dart';
 import 'package:myeventlyapp/core/widgets/Custom_elvetbuttom.dart';
 import 'package:myeventlyapp/core/widgets/custom_text_form_faild.dart';
 
@@ -106,7 +107,9 @@ class _LoginBodyState extends State<LoginBody> {
               Custom_ElevatedButton(
                 title: 'Login',
                 onPressed: () {
-                  if (formkey.currentState?.validate() == false) return;
+                  // if (formkey.currentState?.validate() == false) return;
+
+                  Navigator.pushNamed(context, AppRoutes.Main_layout);
                 },
               ),
               SizedBox(height: 12.h),
@@ -119,7 +122,7 @@ class _LoginBodyState extends State<LoginBody> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.pushNamed(context, AppRoutes.register);
                     },
                     child: Text(
                       'Create Account',

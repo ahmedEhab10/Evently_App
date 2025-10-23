@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 import 'package:myeventlyapp/core/routes_manager/routes.dart';
+import 'package:myeventlyapp/core/utils/UI_Utils.dart';
 import 'package:myeventlyapp/core/widgets/Custom_elvetbuttom.dart';
 
 import 'package:myeventlyapp/core/widgets/custom_text_form_faild.dart';
+import 'package:myeventlyapp/firebase/firebase_service.dart';
 
 class RegisterBody extends StatefulWidget {
   const RegisterBody({super.key});
@@ -146,11 +149,8 @@ class _RegisterBodyState extends State<RegisterBody> {
               Custom_ElevatedButton(
                 title: 'Create Account',
                 onPressed: () {
-                  // if (formkey.currentState?.validate() == false) {
-                  //   return;
-                  // }
-                  ;
-                  Navigator.pushNamed(context, AppRoutes.Main_layout);
+                  if (formkey.currentState?.validate() == false) return;
+                  createAccount();
                 },
               ),
               SizedBox(height: 12.h),
@@ -163,7 +163,7 @@ class _RegisterBodyState extends State<RegisterBody> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.login);
+                      // Navigator.pushNamed(context, AppRoutes.login);
                     },
                     child: Text(
                       'Login',
@@ -183,5 +183,40 @@ class _RegisterBodyState extends State<RegisterBody> {
         ),
       ),
     );
+  }
+
+  void createAccount() async {
+    try {
+      UiUtils.showloading(context);
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: emailController.text,
+            password: passwordController.text,
+          );
+      UiUtils.hideloading(context);
+      UiUtils.showtoastmassage(
+        backgroundColor: Colors.green,
+        message: 'Account created successfully',
+      );
+    } on FirebaseAuthException catch (e) {
+      UiUtils.hideloading(context);
+      if (e.code == 'weak-password') {
+        UiUtils.showtoastmassage(
+          backgroundColor: Colors.red,
+          message: 'The password provided is too weak.',
+        );
+      } else if (e.code == 'email-already-in-use') {
+        UiUtils.showtoastmassage(
+          backgroundColor: Colors.red,
+          message: 'The account already exists for that email.',
+        );
+      }
+    } catch (e) {
+      print(e);
+      UiUtils.showtoastmassage(
+        backgroundColor: Colors.red,
+        message: e.toString(),
+      );
+    }
   }
 }
