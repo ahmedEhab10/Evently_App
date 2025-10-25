@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:myeventlyapp/Models/User_Model.dart';
 import 'package:myeventlyapp/Providers/Theme_provider.dart';
 import 'package:myeventlyapp/core/Prefs/Prefs_Manager.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
@@ -30,7 +31,7 @@ class information_widget extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  'Ahmed Ehab',
+                  UserModel.currentUser!.name,
                   style: TextStyle(
                     color: ColorsManager.white,
                     fontSize: 24.sp,

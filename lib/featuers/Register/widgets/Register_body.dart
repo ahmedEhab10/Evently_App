@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:myeventlyapp/Models/User_Model.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 import 'package:myeventlyapp/core/routes_manager/routes.dart';
 import 'package:myeventlyapp/core/utils/UI_Utils.dart';
@@ -163,7 +164,7 @@ class _RegisterBodyState extends State<RegisterBody> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Navigator.pushNamed(context, AppRoutes.login);
+                      Navigator.pushNamed(context, AppRoutes.login);
                     },
                     child: Text(
                       'Login',
@@ -188,16 +189,24 @@ class _RegisterBodyState extends State<RegisterBody> {
   void createAccount() async {
     try {
       UiUtils.showloading(context);
-      final credential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-            email: emailController.text,
-            password: passwordController.text,
-          );
-      UiUtils.hideloading(context);
+      UserCredential credential = await FirebaseService.createUser(
+        emailAddress: emailController.text,
+        password: passwordController.text,
+      );
+
+      await FirebaseService.addusertofirestore(
+        UserModel(
+          id: credential.user!.uid,
+          name: nameController.text,
+          email: emailController.text,
+        ),
+      );
+
       UiUtils.showtoastmassage(
         backgroundColor: Colors.green,
         message: 'Account created successfully',
       );
+      UiUtils.hideloading(context);
     } on FirebaseAuthException catch (e) {
       UiUtils.hideloading(context);
       if (e.code == 'weak-password') {

@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myeventlyapp/Providers/Theme_provider.dart';
 import 'package:myeventlyapp/core/Prefs/Prefs_Manager.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
+import 'package:myeventlyapp/core/routes_manager/routes.dart';
+import 'package:myeventlyapp/core/utils/UI_Utils.dart';
 import 'package:myeventlyapp/featuers/main_layout/widgets/person_tap/widgets/CustomDropDownItem.dart';
 import 'package:provider/provider.dart';
 
@@ -95,7 +98,12 @@ class PersonScreenBody extends StatelessWidget {
                 color: ColorsManager.white,
               ),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              UiUtils.showloading(context);
+              await FirebaseAuth.instance.signOut();
+              UiUtils.hideloading(context);
+              Navigator.pushReplacementNamed(context, AppRoutes.login);
+            },
             child: Row(
               children: [
                 Icon(Icons.logout),

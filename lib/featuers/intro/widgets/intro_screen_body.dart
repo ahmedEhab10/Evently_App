@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -55,7 +56,15 @@ class IntroScreenBody extends StatelessWidget {
               Custom_ElevatedButton(
                 title: 'Let\'s Start',
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
+                  FirebaseAuth.instance.currentUser != null
+                      ? Navigator.pushReplacementNamed(
+                          context,
+                          AppRoutes.Main_layout,
+                        )
+                      : Navigator.pushReplacementNamed(
+                          context,
+                          AppRoutes.login,
+                        );
                 },
               ),
             ],

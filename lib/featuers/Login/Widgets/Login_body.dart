@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 import 'package:myeventlyapp/core/routes_manager/routes.dart';
+import 'package:myeventlyapp/core/utils/UI_Utils.dart';
 import 'package:myeventlyapp/core/widgets/Custom_elvetbuttom.dart';
 import 'package:myeventlyapp/core/widgets/custom_text_form_faild.dart';
+import 'package:myeventlyapp/firebase/firebase_service.dart';
 
 class LoginBody extends StatefulWidget {
   const LoginBody({super.key});
@@ -107,9 +110,9 @@ class _LoginBodyState extends State<LoginBody> {
               Custom_ElevatedButton(
                 title: 'Login',
                 onPressed: () {
-                  // if (formkey.currentState?.validate() == false) return;
-
-                  Navigator.pushNamed(context, AppRoutes.Main_layout);
+                  if (formkey.currentState?.validate() == false) return;
+                  login();
+                  // Navigator.pushNamed(context, AppRoutes.Main_layout);
                 },
               ),
               SizedBox(height: 12.h),
@@ -142,5 +145,33 @@ class _LoginBodyState extends State<LoginBody> {
         ),
       ),
     );
+  }
+
+  void login() async {
+    try {
+      UiUtils.showloading(context);
+      final credential = await FirebaseService.login(
+        emailAddress: emailController.text,
+        password: passwordController.text,
+      );
+      UiUtils.showtoastmassage(
+        backgroundColor: Colors.green,
+        message: 'Account created successfully',
+      );
+      UiUtils.hideloading(context);
+      Navigator.pushReplacementNamed(context, AppRoutes.Main_layout);
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+      UiUtils.hideloading(context);
+      UiUtils.showtoastmassage(
+        backgroundColor: Colors.red,
+        message: 'email or password is wrong',
+      );
+    } catch (e) {
+      UiUtils.showtoastmassage(
+        backgroundColor: Colors.red,
+        message: 'email or password is wrong',
+      );
+    }
   }
 }
