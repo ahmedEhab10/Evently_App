@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myeventlyapp/Models/User_Model.dart';
 import 'package:myeventlyapp/Providers/Theme_provider.dart';
 import 'package:myeventlyapp/core/Prefs/Prefs_Manager.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
@@ -40,7 +41,7 @@ class PersonScreenBody extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Ahmed Ehab",
+                        UserModel.currentUser!.name,
                         style: GoogleFonts.inter(
                           fontSize: 24.sp,
                           fontWeight: FontWeight.bold,
@@ -49,7 +50,7 @@ class PersonScreenBody extends StatelessWidget {
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        "ahmedhobaa24@gmail.com",
+                        UserModel.currentUser!.email,
                         style: GoogleFonts.inter(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w500,

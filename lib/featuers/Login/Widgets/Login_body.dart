@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:myeventlyapp/Models/User_Model.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 import 'package:myeventlyapp/core/routes_manager/routes.dart';
 import 'package:myeventlyapp/core/utils/UI_Utils.dart';
@@ -153,6 +154,9 @@ class _LoginBodyState extends State<LoginBody> {
       final credential = await FirebaseService.login(
         emailAddress: emailController.text,
         password: passwordController.text,
+      );
+      UserModel.currentUser = await FirebaseService.getuserfromfirestore(
+        credential.user!.uid,
       );
       UiUtils.showtoastmassage(
         backgroundColor: Colors.green,

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:myeventlyapp/Models/Event_item_model.dart';
 import 'package:myeventlyapp/Models/User_Model.dart';
 
 class FirebaseService {
@@ -25,34 +26,63 @@ class FirebaseService {
     return credential;
   }
 
+  // static Future<void> addusertofirestore(UserModel userModel) {
+  //   CollectionReference<Map<String, dynamic>> usersCollection =
+  //       FirebaseFirestore.instance.collection('Users');
+
+  //   DocumentReference<Map<String, dynamic>> userDocument = usersCollection.doc(
+  //     userModel.id,
+  //   );
+
+  //   return userDocument.set(userModel.tojason());
+  // }
+
   static Future<void> addusertofirestore(UserModel userModel) {
-    CollectionReference<Map<String, dynamic>> usersCollection =
-        FirebaseFirestore.instance.collection('Users');
+    CollectionReference<UserModel> usersCollection = FirebaseFirestore.instance
+        .collection('Users')
+        .withConverter<UserModel>(
+          fromFirestore: (snapshot, _) => UserModel.fromJson(snapshot.data()!),
+          toFirestore: (userModel, _) => userModel.tojason(),
+        );
 
-    DocumentReference<Map<String, dynamic>> userDocument = usersCollection.doc(
-      userModel.id,
-    );
-
-    return userDocument.set({
-      'id': userModel.id,
-      'name': userModel.name,
-      'email': userModel.email,
-    });
+    return usersCollection.doc(userModel.id).set(userModel);
   }
 
+  // static Future<UserModel> getuserfromfirestore(String id) async {
+  //   FirebaseFirestore db = FirebaseFirestore.instance;
+  //   CollectionReference<Map<String, dynamic>> usersCollection = db.collection(
+  //     'Users',
+  //   );
+  //   DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+  //       await usersCollection.doc(id).get();
+  //   var jasondata = documentSnapshot.data();
+  //   return UserModel.fromJson(jasondata!);
+  // }
+
   static Future<UserModel> getuserfromfirestore(String id) async {
+    CollectionReference<UserModel> usersCollection = FirebaseFirestore.instance
+        .collection('Users')
+        .withConverter<UserModel>(
+          fromFirestore: (snapshot, _) => UserModel.fromJson(snapshot.data()!),
+          toFirestore: (userModel, _) => userModel.tojason(),
+        );
+    DocumentSnapshot<UserModel> documentSnapshot = await usersCollection
+        .doc(id)
+        .get();
+    return documentSnapshot.data()!;
+  }
+
+  static Future<void> addEventToFirestore(EventModel event) {
     FirebaseFirestore db = FirebaseFirestore.instance;
-    CollectionReference<Map<String, dynamic>> usersCollection = db.collection(
-      'Users',
-    );
-    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-        await usersCollection.doc(id).get();
-    var jasondata = documentSnapshot.data();
-    return UserModel(
-      id: jasondata!['id'],
-      name: jasondata['name'],
-      email: jasondata['email'],
-    );
+    CollectionReference<EventModel> Eventcollection = db
+        .collection('Events')
+        .withConverter<EventModel>(
+          fromFirestore: (json, _) => EventModel.fromJson(json.data()!),
+          toFirestore: (event, _) => event.tojson(),
+        );
+    DocumentReference<EventModel> documentReference = Eventcollection.doc();
+    event.id = documentReference.id;
+    return documentReference.set(event);
   }
 }
 

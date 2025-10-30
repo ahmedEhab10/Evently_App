@@ -74,6 +74,7 @@ class CategoryModel {
       imagePath: "assets/images/Book Club.png",
     ),
   ];
+
   static List<CategoryModel> categories = [
     CategoryModel(
       id: "1",
