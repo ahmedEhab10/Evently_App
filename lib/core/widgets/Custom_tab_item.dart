@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myeventlyapp/Models/category_model.dart';
-import 'package:myeventlyapp/core/res/colors_manager.dart';
 
 class Custom_tab_item extends StatelessWidget {
   const Custom_tab_item({

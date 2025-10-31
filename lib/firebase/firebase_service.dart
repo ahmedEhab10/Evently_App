@@ -84,6 +84,18 @@ class FirebaseService {
     event.id = documentReference.id;
     return documentReference.set(event);
   }
+
+  static Future<List<EventModel>> getEventFromFirestore() async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    CollectionReference<EventModel> Eventcollection = db
+        .collection('Events')
+        .withConverter<EventModel>(
+          fromFirestore: (json, _) => EventModel.fromJson(json.data()!),
+          toFirestore: (event, _) => event.tojson(),
+        );
+    QuerySnapshot<EventModel> querySnapshot = await Eventcollection.get();
+    return querySnapshot.docs.map((e) => e.data()).toList();
+  }
 }
 
 

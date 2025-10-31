@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myeventlyapp/Models/Event_item_model.dart';
@@ -6,27 +8,45 @@ import 'package:myeventlyapp/core/res/colors_manager.dart';
 import 'package:myeventlyapp/core/widgets/Custom_tab_item.dart';
 import 'package:myeventlyapp/core/widgets/Event_item.dart';
 import 'package:myeventlyapp/featuers/main_layout/widgets/home_tap/widgets/information_widget.dart';
+import 'package:myeventlyapp/firebase/firebase_service.dart';
 
-class HomeScreenBody extends StatelessWidget {
+class HomeScreenBody extends StatefulWidget {
   const HomeScreenBody({super.key});
 
+  @override
+  State<HomeScreenBody> createState() => _HomeScreenBodyState();
+}
+
+class _HomeScreenBodyState extends State<HomeScreenBody> {
+  int selectedIndex = 0;
+  List<EventModel> events = [];
+  late CategoryModel selectedCategory = CategoryModel.categoriesWithAll[0];
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         information_containat(),
-        Expanded(
-          child: ListView.builder(
-            itemBuilder: (context, index) => Event_item(
-              eventModel: EventModel(
-                category: CategoryModel.categories[2],
-                title: 'Meeting for Updating The Development Method ',
-                description: 'Meeting for Updating The Development Method ',
-                date: DateTime.now(),
+        FutureBuilder(
+          future: FirebaseService.getEventFromFirestore(),
+
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              log('Error: ${snapshot.error}');
+              return Text(snapshot.error.toString());
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              log('Loading...');
+              return Center(child: CircularProgressIndicator());
+            }
+            log('Data: ${snapshot.data!.length}');
+            return Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) =>
+                    Event_item(eventModel: snapshot.data![index]),
+                itemCount: snapshot.data!.length,
               ),
-            ),
-            itemCount: 15,
-          ),
+            );
+          },
         ),
       ],
     );

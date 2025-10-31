@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:intl/intl.dart';
 import 'package:myeventlyapp/Models/Event_item_model.dart';
 import 'package:myeventlyapp/Models/category_model.dart';
@@ -8,7 +8,7 @@ import 'package:myeventlyapp/core/res/colors_manager.dart';
 import 'package:myeventlyapp/core/utils/UI_Utils.dart';
 import 'package:myeventlyapp/core/widgets/CustomTextButton.dart';
 import 'package:myeventlyapp/core/widgets/Custom_elvetbuttom.dart';
-import 'package:myeventlyapp/core/widgets/Custom_tab_item.dart';
+
 import 'package:myeventlyapp/core/widgets/Custom_tapbar.dart';
 import 'package:myeventlyapp/core/widgets/custom_text_form_faild.dart';
 import 'package:myeventlyapp/firebase/firebase_service.dart';
