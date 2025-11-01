@@ -9,6 +9,7 @@ import 'package:myeventlyapp/config/Theme/Theme_Manager.dart';
 import 'package:myeventlyapp/core/Prefs/Prefs_Manager.dart';
 import 'package:myeventlyapp/core/routes_manager/app_router.dart';
 import 'package:myeventlyapp/core/routes_manager/routes.dart';
+import 'package:myeventlyapp/firebase/FcmService.dart';
 import 'package:myeventlyapp/firebase/firebase_service.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,7 @@ void main() async {
       FirebaseAuth.instance.currentUser!.uid,
     );
   }
+  FcmService.intfcm();
   runApp(
     MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => ThemeProvider())],
