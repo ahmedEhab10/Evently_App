@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myeventlyapp/Models/Event_item_model.dart';
 import 'package:myeventlyapp/Models/User_Model.dart';
+import 'package:myeventlyapp/Models/category_model.dart';
 
 class FirebaseService {
   static Future<UserCredential> createUser({
@@ -85,16 +86,40 @@ class FirebaseService {
     return documentReference.set(event);
   }
 
-  static Future<List<EventModel>> getEventFromFirestore() async {
+  static Future<List<EventModel>> getEventFromFirestore({
+    required CategoryModel category,
+  }) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
-    CollectionReference<EventModel> Eventcollection = db
+    Query<EventModel> Eventcollection = db
         .collection('Events')
         .withConverter<EventModel>(
           fromFirestore: (json, _) => EventModel.fromJson(json.data()!),
           toFirestore: (event, _) => event.tojson(),
-        );
+        )
+        .where('categoryid', isEqualTo: category.id == '0' ? null : category.id)
+        .orderBy('date');
     QuerySnapshot<EventModel> querySnapshot = await Eventcollection.get();
     return querySnapshot.docs.map((e) => e.data()).toList();
+  }
+
+  static Stream<List<EventModel>> getEventFromFirestorerealtime({
+    required CategoryModel category,
+  }) async* {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    Query<EventModel> Eventcollection = db
+        .collection('Events')
+        .withConverter<EventModel>(
+          fromFirestore: (json, _) => EventModel.fromJson(json.data()!),
+          toFirestore: (event, _) => event.tojson(),
+        )
+        .where('categoryid', isEqualTo: category.id == '0' ? null : category.id)
+        .orderBy('date');
+    Stream<QuerySnapshot<EventModel>> querySnapshots =
+        Eventcollection.snapshots();
+
+    yield* querySnapshots.map(
+      (Query) => Query.docs.map((e) => e.data()).toList(),
+    );
   }
 }
 

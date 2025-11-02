@@ -25,9 +25,17 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        information_containat(),
-        FutureBuilder(
-          future: FirebaseService.getEventFromFirestore(),
+        information_containat(
+          onCategoryItemClicked: (category) {
+            setState(() {
+              selectedCategory = category;
+            });
+          },
+        ),
+        StreamBuilder(
+          stream: FirebaseService.getEventFromFirestorerealtime(
+            category: selectedCategory,
+          ),
 
           builder: (context, snapshot) {
             if (snapshot.hasError) {
@@ -54,15 +62,16 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
 }
 
 class information_containat extends StatefulWidget {
-  const information_containat({super.key});
-
+  const information_containat({super.key, required this.onCategoryItemClicked});
+  final void Function(CategoryModel category)? onCategoryItemClicked;
+  @override
   @override
   State<information_containat> createState() => _information_containatState();
 }
 
 class _information_containatState extends State<information_containat> {
   int currentIndex = 0;
-  @override
+
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -89,6 +98,9 @@ class _information_containatState extends State<information_containat> {
                 onTap: (index) {
                   setState(() {
                     currentIndex = index;
+                    widget.onCategoryItemClicked?.call(
+                      CategoryModel.categoriesWithAll[index],
+                    );
                   });
                 },
                 indicatorColor: Colors.transparent,
