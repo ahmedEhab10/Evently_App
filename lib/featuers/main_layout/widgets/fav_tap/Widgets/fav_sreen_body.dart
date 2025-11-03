@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myeventlyapp/Models/Event_item_model.dart';
+import 'package:myeventlyapp/Models/User_Model.dart';
 import 'package:myeventlyapp/Models/category_model.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 import 'package:myeventlyapp/core/widgets/Event_item.dart';
+import 'package:myeventlyapp/firebase/firebase_service.dart';
 
 class FavSreenBody extends StatelessWidget {
   const FavSreenBody({super.key});
@@ -36,18 +40,29 @@ class FavSreenBody extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) => Event_item(
-                eventModel: EventModel(
-                  category: CategoryModel.categories[2],
-                  title: 'Meeting for Updating The Development Method ',
-                  description: 'Meeting for Updating The Development Method ',
-                  date: DateTime.now(),
+          FutureBuilder(
+            future: FirebaseService.getFavoriteEvents(),
+
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return Center(child: Text(snapshot.error.toString()));
+              }
+
+              List<EventModel> favouriteEvents = snapshot.data ?? [];
+              return Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: favouriteEvents.length,
+                  itemBuilder: (context, index) => Event_item(
+                    eventModel: favouriteEvents[index],
+                    MarkAsFavorit: true,
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ],
       ),

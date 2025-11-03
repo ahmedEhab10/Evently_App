@@ -199,6 +199,7 @@ class _RegisterBodyState extends State<RegisterBody> {
           id: credential.user!.uid,
           name: nameController.text,
           email: emailController.text,
+          FavoritesEventsid: [],
         ),
       );
 

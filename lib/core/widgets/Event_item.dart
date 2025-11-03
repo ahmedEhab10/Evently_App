@@ -4,17 +4,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:myeventlyapp/Models/Event_item_model.dart';
 import 'package:myeventlyapp/core/Helper/get_mounth_name.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
+import 'package:myeventlyapp/firebase/firebase_service.dart';
 
 class Event_item extends StatefulWidget {
-  const Event_item({super.key, required this.eventModel});
+  const Event_item({super.key, required this.eventModel, this.MarkAsFavorit});
   final EventModel eventModel;
+  final bool? MarkAsFavorit;
 
   @override
   State<Event_item> createState() => _Event_itemState();
 }
 
 class _Event_itemState extends State<Event_item> {
-  bool isfav = false;
+  late bool isfav = widget.MarkAsFavorit ?? false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,11 +81,7 @@ class _Event_itemState extends State<Event_item> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isfav = !isfav;
-                        });
-                      },
+                      onTap: MarkFavEventItem,
                       child: Icon(
                         isfav ? Icons.favorite : Icons.favorite_border_outlined,
                         color: ColorsManager.blue,
@@ -97,5 +95,15 @@ class _Event_itemState extends State<Event_item> {
         ),
       ),
     );
+  }
+
+  void MarkFavEventItem() async {
+    if (isfav) {
+      await FirebaseService.removeEventstofavorite(widget.eventModel);
+      setState(() => isfav = false);
+    } else {
+      await FirebaseService.addEventstofavorite(widget.eventModel);
+      setState(() => isfav = true);
+    }
   }
 }

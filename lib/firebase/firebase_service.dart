@@ -59,14 +59,17 @@ class FirebaseService {
   //   var jasondata = documentSnapshot.data();
   //   return UserModel.fromJson(jasondata!);
   // }
-
-  static Future<UserModel> getuserfromfirestore(String id) async {
-    CollectionReference<UserModel> usersCollection = FirebaseFirestore.instance
+  static CollectionReference<UserModel> getusercollection() {
+    return FirebaseFirestore.instance
         .collection('Users')
         .withConverter<UserModel>(
           fromFirestore: (snapshot, _) => UserModel.fromJson(snapshot.data()!),
           toFirestore: (userModel, _) => userModel.tojason(),
         );
+  }
+
+  static Future<UserModel> getuserfromfirestore(String id) async {
+    CollectionReference<UserModel> usersCollection = getusercollection();
     DocumentSnapshot<UserModel> documentSnapshot = await usersCollection
         .doc(id)
         .get();
@@ -87,7 +90,7 @@ class FirebaseService {
   }
 
   static Future<List<EventModel>> getEventFromFirestore({
-    required CategoryModel category,
+    CategoryModel? category,
   }) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     Query<EventModel> Eventcollection = db
@@ -95,15 +98,14 @@ class FirebaseService {
         .withConverter<EventModel>(
           fromFirestore: (json, _) => EventModel.fromJson(json.data()!),
           toFirestore: (event, _) => event.tojson(),
-        )
-        .where('categoryid', isEqualTo: category.id == '0' ? null : category.id)
-        .orderBy('date');
+        );
+
     QuerySnapshot<EventModel> querySnapshot = await Eventcollection.get();
     return querySnapshot.docs.map((e) => e.data()).toList();
   }
 
   static Stream<List<EventModel>> getEventFromFirestorerealtime({
-    required CategoryModel category,
+    CategoryModel? category,
   }) async* {
     FirebaseFirestore db = FirebaseFirestore.instance;
     Query<EventModel> Eventcollection = db
@@ -112,7 +114,10 @@ class FirebaseService {
           fromFirestore: (json, _) => EventModel.fromJson(json.data()!),
           toFirestore: (event, _) => event.tojson(),
         )
-        .where('categoryid', isEqualTo: category.id == '0' ? null : category.id)
+        .where(
+          'categoryid',
+          isEqualTo: category!.id == '0' ? null : category.id,
+        )
         .orderBy('date');
     Stream<QuerySnapshot<EventModel>> querySnapshots =
         Eventcollection.snapshots();
@@ -120,6 +125,45 @@ class FirebaseService {
     yield* querySnapshots.map(
       (Query) => Query.docs.map((e) => e.data()).toList(),
     );
+  }
+
+  static Future<void> addEventstofavorite(EventModel event) {
+    UserModel currentuser = UserModel.currentUser!;
+    currentuser.FavoritesEventsid.add(event.id!);
+    CollectionReference<UserModel> usersCollection = getusercollection();
+    DocumentReference<UserModel> currentuserdoc = usersCollection.doc(
+      currentuser.id,
+    );
+    return currentuserdoc.set(currentuser);
+  }
+
+  static Future<void> removeEventstofavorite(EventModel event) {
+    UserModel currentuser = UserModel.currentUser!;
+    currentuser.FavoritesEventsid.remove(event.id!);
+    CollectionReference<UserModel> usersCollection = getusercollection();
+    DocumentReference<UserModel> currentuserdoc = usersCollection.doc(
+      currentuser.id,
+    );
+    return currentuserdoc.set(currentuser);
+  }
+
+  static Future<List<EventModel>> getFavoriteEvents() async {
+    List<EventModel> events = await getEventFromFirestore();
+    List<EventModel> favouriteEvents = events
+        .where(
+          (event) =>
+              UserModel.currentUser!.FavoritesEventsid.contains(event.id),
+        )
+        .toList();
+    return favouriteEvents;
+    // return getEventFromFirestorerealtime().map((allEvents) {
+    //   return allEvents
+    //       .where(
+    //         (event) =>
+    //             UserModel.currentUser!.FavoritesEventsid.contains(event.id),
+    //       )
+    //       .toList();
+    // });
   }
 }
 

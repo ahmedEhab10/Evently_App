@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myeventlyapp/Models/Event_item_model.dart';
+import 'package:myeventlyapp/Models/User_Model.dart';
 import 'package:myeventlyapp/Models/category_model.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 import 'package:myeventlyapp/core/widgets/Custom_tab_item.dart';
@@ -47,10 +48,14 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
               return Center(child: CircularProgressIndicator());
             }
             log('Data: ${snapshot.data!.length}');
+            List<EventModel> events = snapshot.data ?? [];
             return Expanded(
               child: ListView.builder(
-                itemBuilder: (context, index) =>
-                    Event_item(eventModel: snapshot.data![index]),
+                itemBuilder: (context, index) => Event_item(
+                  eventModel: snapshot.data![index],
+                  MarkAsFavorit: UserModel.currentUser!.FavoritesEventsid
+                      .contains(events[index].id),
+                ),
                 itemCount: snapshot.data!.length,
               ),
             );
@@ -64,7 +69,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
 class information_containat extends StatefulWidget {
   const information_containat({super.key, required this.onCategoryItemClicked});
   final void Function(CategoryModel category)? onCategoryItemClicked;
-  @override
+
   @override
   State<information_containat> createState() => _information_containatState();
 }
