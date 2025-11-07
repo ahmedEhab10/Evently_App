@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:intl/intl.dart';
 import 'package:myeventlyapp/Models/Event_item_model.dart';
+import 'package:myeventlyapp/Models/User_Model.dart';
 import 'package:myeventlyapp/Models/category_model.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 import 'package:myeventlyapp/core/utils/UI_Utils.dart';
@@ -195,6 +196,7 @@ class _CreateEventBodyState extends State<CreateEventBody> {
       title: _titleController.text,
       description: _descriptionController.text,
       date: selectedDateTime,
+      userid: UserModel.currentUser!.id,
     );
     UiUtils.showloading(context);
     await FirebaseService.addEventToFirestore(event);

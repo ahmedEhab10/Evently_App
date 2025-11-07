@@ -7,6 +7,7 @@ import 'package:myeventlyapp/core/routes_manager/routes.dart';
 import 'package:myeventlyapp/core/utils/UI_Utils.dart';
 import 'package:myeventlyapp/core/widgets/Custom_elvetbuttom.dart';
 import 'package:myeventlyapp/core/widgets/custom_text_form_faild.dart';
+import 'package:myeventlyapp/featuers/Login/Widgets/google_login_button.dart';
 import 'package:myeventlyapp/firebase/firebase_service.dart';
 
 class LoginBody extends StatefulWidget {
@@ -141,6 +142,29 @@ class _LoginBodyState extends State<LoginBody> {
                   ),
                 ],
               ),
+              SizedBox(height: 12.h),
+              Row(
+                children: [
+                  Expanded(
+                    child: Divider(color: ColorsManager.blue, thickness: 1),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      'Or ',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: ColorsManager.blue,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Divider(color: ColorsManager.blue, thickness: 1),
+                  ),
+                ],
+              ),
+              SizedBox(height: 18.h),
+              GoogleLoginButton(),
             ],
           ),
         ),

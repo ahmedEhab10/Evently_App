@@ -6,6 +6,7 @@ import 'package:myeventlyapp/Models/Event_item_model.dart';
 import 'package:myeventlyapp/Models/User_Model.dart';
 import 'package:myeventlyapp/Models/category_model.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
+import 'package:myeventlyapp/core/routes_manager/routes.dart';
 import 'package:myeventlyapp/core/widgets/Custom_tab_item.dart';
 import 'package:myeventlyapp/core/widgets/Event_item.dart';
 import 'package:myeventlyapp/featuers/main_layout/widgets/home_tap/widgets/information_widget.dart';
@@ -51,10 +52,19 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
             List<EventModel> events = snapshot.data ?? [];
             return Expanded(
               child: ListView.builder(
-                itemBuilder: (context, index) => Event_item(
-                  eventModel: snapshot.data![index],
-                  MarkAsFavorit: UserModel.currentUser!.FavoritesEventsid
-                      .contains(events[index].id),
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.Event_details,
+                      arguments: snapshot.data![index],
+                    );
+                  },
+                  child: Event_item(
+                    eventModel: snapshot.data![index],
+                    MarkAsFavorit: UserModel.currentUser!.FavoritesEventsid
+                        .contains(events[index].id),
+                  ),
                 ),
                 itemCount: snapshot.data!.length,
               ),
