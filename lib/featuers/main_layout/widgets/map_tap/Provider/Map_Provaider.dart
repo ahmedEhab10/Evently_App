@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -6,12 +7,14 @@ import 'package:location/location.dart';
 
 class MapProvaider extends ChangeNotifier {
   MapProvaider() {
+    setlocationlistner();
     getuserlocation();
   }
   Set<Marker> markers = {};
   final Location location = Location();
   String locationmessage = '';
-  late GoogleMapController mapController;
+  GoogleMapController? mapController;
+  late StreamSubscription<LocationData> listener;
 
   CameraPosition cameraPosition = const CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -33,6 +36,36 @@ class MapProvaider extends ChangeNotifier {
     return isGpsServiceEnabled;
   }
 
+  void changeCameraPosition(LocationData locationData) {
+    if (mapController == null) return;
+    CameraPosition cameraPosition = CameraPosition(
+      target: LatLng(locationData.latitude ?? 0, locationData.longitude ?? 0),
+      zoom: 17,
+    );
+    markers.add(
+      Marker(
+        markerId: MarkerId('1'),
+        position: LatLng(
+          locationData.latitude ?? 0,
+          locationData.longitude ?? 0,
+        ),
+      ),
+    );
+    mapController!.animateCamera(
+      CameraUpdate.newCameraPosition(cameraPosition),
+    );
+  }
+
+  void setlocationlistner() {
+    listener = location.onLocationChanged.listen((
+      LocationData currentLocation,
+    ) {
+      location.changeSettings(accuracy: LocationAccuracy.high, interval: 500);
+      changeCameraPosition(currentLocation);
+      notifyListeners();
+    });
+  }
+
   Future<void> getuserlocation() async {
     bool ispermissiongranted = await getlicationpermission();
     if (!ispermissiongranted) {
@@ -48,24 +81,14 @@ class MapProvaider extends ChangeNotifier {
     }
 
     LocationData locationData = await location.getLocation();
-    CameraPosition cameraPosition = CameraPosition(
-      target: LatLng(locationData.latitude ?? 0, locationData.longitude ?? 0),
-      zoom: 17,
-    );
-    markers.add(
-      Marker(
-        markerId: MarkerId('1'),
-        position: LatLng(
-          locationData.latitude ?? 0,
-          locationData.longitude ?? 0,
-        ),
-      ),
-    );
-    mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    changeCameraPosition(locationData);
+    notifyListeners();
   }
 
   @override
   void dispose() {
+    listener.cancel();
+    mapController!.dispose();
     log('out of map provider');
     super.dispose();
   }

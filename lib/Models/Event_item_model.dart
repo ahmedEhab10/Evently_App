@@ -9,6 +9,10 @@ class EventModel {
   String description;
   DateTime date;
   String? userid;
+  double? latitude;
+  double? longitude;
+  String? eventCity;
+  String? eventCountry;
 
   EventModel({
     this.id,
@@ -17,6 +21,10 @@ class EventModel {
     required this.description,
     required this.date,
     this.userid,
+    this.latitude,
+    this.longitude,
+    this.eventCity,
+    this.eventCountry,
   });
 
   EventModel.fromJson(Map<String, dynamic> json)
@@ -29,6 +37,10 @@ class EventModel {
         description: json["description"],
         date: (json["date"] as Timestamp).toDate(),
         userid: json["userid"],
+        latitude: json["latitude"],
+        longitude: json["longitude"],
+        eventCity: json["eventCity"] ?? 'Known City',
+        eventCountry: json["eventCountry"] ?? 'Known Country',
       );
 
   Map<String, dynamic> tojson() => {
@@ -38,6 +50,10 @@ class EventModel {
     "description": description,
     "date": date,
     "userid": userid,
+    "latitude": latitude,
+    "longitude": longitude,
+    "eventCity": eventCity ?? 'Known City',
+    "eventCountry": eventCountry ?? 'Known Country',
   };
 }
 

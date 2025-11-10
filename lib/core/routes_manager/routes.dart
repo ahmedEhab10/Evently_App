@@ -7,4 +7,6 @@ class AppRoutes {
   static const String Crate_Event = "/Crate_Event";
   static const String onboarding = "/onboarding";
   static const String Event_details = "/Event_details";
+  static const String pick_event_location_screen =
+      "/pick_event_location_screen";
 }

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:myeventlyapp/Models/Event_item_model.dart';
 import 'package:myeventlyapp/core/routes_manager/routes.dart';
 import 'package:myeventlyapp/featuers/Create_Event/Create_evvet_screen.dart';
+import 'package:myeventlyapp/featuers/Create_Event/Provider/Create_Event_Provider.dart';
+import 'package:myeventlyapp/featuers/Create_Event/Widgets/pick_evet_location_creen.dart';
 import 'package:myeventlyapp/featuers/Event_Details/Event_Details.dart';
 import 'package:myeventlyapp/featuers/Login/login.dart';
 import 'package:myeventlyapp/featuers/Register/Register.dart';
@@ -47,6 +49,16 @@ class RoutesManger {
           return CupertinoPageRoute(
             builder: (context) =>
                 EventDetails(event: settings.arguments as EventModel),
+          );
+        }
+      case AppRoutes.pick_event_location_screen:
+        {
+          return CupertinoPageRoute(
+            builder: (context) {
+              return PickEvetLocationCreen(
+                provider: settings.arguments as CreateEventProvider,
+              );
+            },
           );
         }
     }
