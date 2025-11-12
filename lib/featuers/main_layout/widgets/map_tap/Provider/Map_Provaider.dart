@@ -4,17 +4,26 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:myeventlyapp/Models/Event_item_model.dart';
+import 'package:myeventlyapp/firebase/firebase_service.dart';
 
 class MapProvaider extends ChangeNotifier {
   MapProvaider() {
     setlocationlistner();
     getuserlocation();
+    getEventFromFirestore();
   }
   Set<Marker> markers = {};
   final Location location = Location();
   String locationmessage = '';
   GoogleMapController? mapController;
   late StreamSubscription<LocationData> listener;
+  List<EventModel> events = [];
+
+  Future<void> getEventFromFirestore() async {
+    events = await FirebaseService.getEventFromFirestore();
+    notifyListeners();
+  }
 
   CameraPosition cameraPosition = const CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -26,6 +35,25 @@ class MapProvaider extends ChangeNotifier {
       permissionStatus = await location.requestPermission();
     }
     return permissionStatus == PermissionStatus.granted;
+  }
+
+  void navigatetoeventlocation(LatLng location) {
+    if (mapController == null) return;
+    CameraPosition cameraPosition = CameraPosition(target: location, zoom: 17);
+    markers.add(
+      Marker(
+        markerId: MarkerId(UniqueKey().toString()),
+        position: location,
+        infoWindow: InfoWindow(
+          title: 'Event Location ',
+          snippet: 'Event Location',
+        ),
+      ),
+    );
+    mapController!.animateCamera(
+      CameraUpdate.newCameraPosition(cameraPosition),
+    );
+    notifyListeners();
   }
 
   Future<bool> checkLocationService() async {

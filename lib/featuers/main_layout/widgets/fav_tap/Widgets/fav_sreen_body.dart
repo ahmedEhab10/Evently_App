@@ -4,23 +4,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myeventlyapp/Models/Event_item_model.dart';
-import 'package:myeventlyapp/Models/User_Model.dart';
-import 'package:myeventlyapp/Models/category_model.dart';
+
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 import 'package:myeventlyapp/core/widgets/Event_item.dart';
+import 'package:myeventlyapp/featuers/main_layout/widgets/fav_tap/Provider/favorite_provider.dart';
 import 'package:myeventlyapp/firebase/firebase_service.dart';
+import 'package:provider/provider.dart';
 
-class FavSreenBody extends StatelessWidget {
+class FavSreenBody extends StatefulWidget {
   const FavSreenBody({super.key});
 
   @override
+  State<FavSreenBody> createState() => _FavSreenBodyState();
+}
+
+class _FavSreenBodyState extends State<FavSreenBody> {
+  late TextEditingController searchController;
+  @override
+  void initState() {
+    searchController = TextEditingController();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    FavoriteProvider provider = Provider.of<FavoriteProvider>(context);
+    log(provider.allfavoriteEvents.length.toString());
+
     return SafeArea(
       child: Column(
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: TextField(
+              controller: TextEditingController(),
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search, color: ColorsManager.blue),
                 hintText: "Search for Event",
@@ -52,6 +70,8 @@ class FavSreenBody extends StatelessWidget {
               }
 
               List<EventModel> favouriteEvents = snapshot.data ?? [];
+              //  List<EventModel> serchEvents = favouriteEvents.where((event) => event.title.toLowerCase().contains(searchController.text.toLowerCase())).toList();
+
               return Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
