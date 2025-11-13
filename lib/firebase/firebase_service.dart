@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:myeventlyapp/Models/Event_item_model.dart';
 import 'package:myeventlyapp/Models/User_Model.dart';
 import 'package:myeventlyapp/Models/category_model.dart';
@@ -26,6 +27,8 @@ class FirebaseService {
         .signInWithEmailAndPassword(email: emailAddress, password: password);
     return credential;
   }
+
+  static Future<UserCredential?> loginwithgoogle() async {}
 
   // static Future<void> addusertofirestore(UserModel userModel) {
   //   CollectionReference<Map<String, dynamic>> usersCollection =
@@ -125,6 +128,23 @@ class FirebaseService {
     yield* querySnapshots.map(
       (Query) => Query.docs.map((e) => e.data()).toList(),
     );
+  }
+
+  static void removeEventfromfirebase(String eventid) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    Query<EventModel> Eventcollection = db
+        .collection('Events')
+        .withConverter<EventModel>(
+          fromFirestore: (json, _) => EventModel.fromJson(json.data()!),
+          toFirestore: (event, _) => event.tojson(),
+        );
+
+    QuerySnapshot<EventModel> querySnapshot = await Eventcollection.get();
+    querySnapshot.docs.forEach((element) {
+      if (element.data().id == eventid) {
+        element.reference.delete();
+      }
+    });
   }
 
   static Future<void> addEventstofavorite(EventModel event) {

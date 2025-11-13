@@ -20,9 +20,9 @@ class EventDetailsBody extends StatelessWidget {
         children: [
           EventDetialsAppbar(event: Eevent),
           SizedBox(height: 16.h),
-          Column(children: [Image.asset('assets/images/sport.png')]),
+          Column(children: [Image.asset(Eevent.category.imagePath)]),
           Text(
-            'We Are Going To Play Football',
+            Eevent.title,
             style: GoogleFonts.inter(
               fontSize: 24.sp,
               fontWeight: FontWeight.w700,
@@ -30,13 +30,13 @@ class EventDetailsBody extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.h),
-          DateContinr(),
+          DateContinr(event: Eevent),
           SizedBox(height: 16.h),
           LocationContinar(),
           SizedBox(height: 16.h),
           Text('Description', style: Theme.of(context).textTheme.titleSmall),
           Text(
-            'Lorem ipsum dolor sit amet consectetur. Vulputate eleifend suscipit eget neque senectus a. Nulla at non malesuada odio duis lectus amet nisi sit. Risus hac enim maecenas auctor et. At cras massa diam porta facilisi lacus purus. Iaculis eget quis ut amet. Sit ac malesuada nisi quis  feugiat.',
+            Eevent.description,
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ],

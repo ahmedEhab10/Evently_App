@@ -54,7 +54,7 @@ class _Event_itemState extends State<Event_item> {
                       ),
                     ),
                     Text(
-                      GetMounthName.getMounthName(widget.eventModel.date),
+                      convetdate.getMounthName(widget.eventModel.date),
                       style: GoogleFonts.inter(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.bold,

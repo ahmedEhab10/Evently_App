@@ -116,7 +116,10 @@ class MapProvaider extends ChangeNotifier {
   @override
   void dispose() {
     listener.cancel();
-    mapController!.dispose();
+    if (mapController != null) {
+      mapController!.dispose();
+    }
+
     log('out of map provider');
     super.dispose();
   }

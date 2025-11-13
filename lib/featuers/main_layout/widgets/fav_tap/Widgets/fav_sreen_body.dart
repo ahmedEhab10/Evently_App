@@ -20,8 +20,11 @@ class FavSreenBody extends StatefulWidget {
 
 class _FavSreenBodyState extends State<FavSreenBody> {
   late TextEditingController searchController;
+  late List<EventModel> allfavouriteEvents;
+  List<EventModel> serachEventlist = [];
   @override
   void initState() {
+    getallevents();
     searchController = TextEditingController();
     // TODO: implement initState
     super.initState();
@@ -38,7 +41,11 @@ class _FavSreenBodyState extends State<FavSreenBody> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: TextField(
-              controller: TextEditingController(),
+              controller: searchController,
+              onChanged: (value) {
+                log(value);
+                handlesearch(value);
+              },
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search, color: ColorsManager.blue),
                 hintText: "Search for Event",
@@ -69,7 +76,10 @@ class _FavSreenBodyState extends State<FavSreenBody> {
                 return Center(child: Text(snapshot.error.toString()));
               }
 
-              List<EventModel> favouriteEvents = snapshot.data ?? [];
+              List<EventModel> favouriteEvents = serachEventlist.isEmpty
+                  ? snapshot.data!
+                  : serachEventlist;
+
               //  List<EventModel> serchEvents = favouriteEvents.where((event) => event.title.toLowerCase().contains(searchController.text.toLowerCase())).toList();
 
               return Expanded(
@@ -87,5 +97,32 @@ class _FavSreenBodyState extends State<FavSreenBody> {
         ],
       ),
     );
+  }
+
+  dispose() {
+    log(searchController.text.toString());
+    searchController.dispose();
+    super.dispose();
+  }
+
+  getallevents() async {
+    allfavouriteEvents = await FirebaseService.getFavoriteEvents();
+    setState(() {});
+  }
+
+  handlesearch(String? value) {
+    setState(() {
+      if (value!.isEmpty) {
+        serachEventlist = List.from(
+          allfavouriteEvents,
+        ); // Show all if query is empty
+      } else {
+        serachEventlist = allfavouriteEvents
+            .where(
+              (item) => item.title.toLowerCase().contains(value.toLowerCase()),
+            )
+            .toList();
+      }
+    });
   }
 }

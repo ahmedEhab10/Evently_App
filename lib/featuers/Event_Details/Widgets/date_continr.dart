@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myeventlyapp/Models/Event_item_model.dart';
+import 'package:myeventlyapp/core/Helper/get_mounth_name.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
 
 class DateContinr extends StatelessWidget {
-  const DateContinr({super.key});
+  const DateContinr({super.key, required this.event});
+  final EventModel event;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class DateContinr extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '21 November 2024 ',
+                convetdate.TimeConvert(event.date),
                 style: GoogleFonts.inter(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w700,
@@ -31,7 +34,7 @@ class DateContinr extends StatelessWidget {
                 ),
               ),
               Text(
-                '12:00 PM',
+                event.date.hour.toString() + ':' + event.date.minute.toString(),
                 style: GoogleFonts.inter(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w700,

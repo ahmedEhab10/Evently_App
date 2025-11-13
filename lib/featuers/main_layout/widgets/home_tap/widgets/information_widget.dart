@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myeventlyapp/Models/User_Model.dart';
 import 'package:myeventlyapp/Providers/Theme_provider.dart';
+import 'package:myeventlyapp/Providers/language_provider.dart';
 import 'package:myeventlyapp/core/Prefs/Prefs_Manager.dart';
 import 'package:myeventlyapp/core/res/colors_manager.dart';
+import 'package:myeventlyapp/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class information_widget extends StatelessWidget {
@@ -11,7 +13,9 @@ class information_widget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     var themeprovaider = Provider.of<ThemeProvider>(context);
+    var langProvider = Provider.of<LanguageProvider>(context);
     return Column(
       children: [
         SizedBox(height: 16.h),
@@ -22,7 +26,7 @@ class information_widget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Welcome Back ✨',
+                  '${AppLocalizations.of(context)!.welcome_back}✨',
                   style: TextStyle(
                     color: ColorsManager.white,
                     fontSize: 14.sp,
@@ -65,16 +69,23 @@ class information_widget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 8.w),
-                Container(
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Text(
-                      'En',
-                      style: TextStyle(
-                        color: ColorsManager.blue,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () {
+                    langProvider.changeAppLanguage(
+                      langProvider.isEnglish ? "ar" : "en",
+                    );
+                  },
+                  child: Container(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Text(
+                        'En',
+                        style: TextStyle(
+                          color: ColorsManager.blue,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),

@@ -14,7 +14,7 @@ class FavoriteProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<EventModel> search(String search) {
+  List<EventModel> handelsearch(String search) {
     searchEvent = allfavoriteEvents
         .where(
           (element) =>

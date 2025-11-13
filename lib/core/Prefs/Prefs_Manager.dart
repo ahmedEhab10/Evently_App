@@ -25,4 +25,13 @@ class PrefsManager {
       return ThemeMode.dark;
     }
   }
+
+  static void saveLanguage(String language) {
+    pref.setString(ConstantVaribal.languageKey, language);
+  }
+
+  static String? getSavedLanguage() {
+    String? savedLanguage = pref.getString(ConstantVaribal.languageKey);
+    return savedLanguage;
+  }
 }
